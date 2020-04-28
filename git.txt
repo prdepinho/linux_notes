@@ -1,0 +1,743 @@
+# Git
+
+## Save credentials:
+git config credential.helper store
+
+## Create a branch 123_crir_usuario
+git checkout -b 123_criar_usuario
+
+## Change to branch dev
+git checkout dev
+
+## Update branch with remote repository
+git pull
+
+## Update branch with the content of dev
+git pull origin dev
+
+Conflicted passages will be set in the following format:
+
+<<<<<<< HEAD
+local code ...
+=======
+remote code ...
+>>>>>>> 0a050c999461635fb7fc418f15a3735b94e25131
+
+## Cancel a conflict and return to what it was before the pull or merge:
+git merge --abort
+
+## Stage changes to commit
+git add .
+
+## Commit staged changes
+git commit -m "comments"
+
+## Updates remote repository with committed local changes
+git push origin 123_criar_usuario
+
+## Saving and recovering stashes: (useful for changing branches without
+committing)
+git stash
+git stash list
+git stash apply
+
+Or apply a specific stash:
+git stash apply stash@{0}
+
+## Recover a file to its last committed version
+git checkout [file]
+
+## Resets all uncommitted changes
+git reset
+
+## Undo a commit, restage changes
+git reset --soft HEAD^
+
+## Undo every thing
+git reset --hard
+
+## Merge branches
+- In the changed branch:
+git push origin to_branch_name
+
+- In the merging branch, master, for example
+git merge from_branch_name
+git push origin to_branch_name
+
+## Merge a specific commit:
+git cherry-pick commit-hash
+
+## Compare two branches' version of a file:
+git diff branch1 branch2 -- filename
+
+## Recover a deleted file from the last commit where it has been modified.
+git checkout $(git rev-list -n 1 HEAD -- filename)^ -- filename
+
+## Check the contents of a file in a remote repository:
+git show remotes/intelbras/master:setup.py
+
+
+## Add a remote repository:
+git remote add remote_name http://link/to/repository.git
+
+## Push to a remote repository (the local branch and the remote branch must
+have the same name):
+git push remote_name branch_name
+
+
+================================================================================
+
+# AWS
+
+## Upload lambda code:
+aws lambda update-function-code --function-name treasure --zip-file fileb://lambda_treasure.zip
+
+You have to insert the credentials of the user first. Create an user with admin
+privileges and copy its credentials.
+
+
+================================================================================
+
+# gcc
+
+## Compile a shared library:
+gcc -fPIC -shared libtest.c -o libtest.so
+
+
+================================================================================
+
+# Linux
+
+## Shutdown now:
+sudo shutdown -P 0
+
+## Restart now:
+sudo restart
+sudo shutdown -r 0
+
+## Show disk usage in human readable form:
+df -h
+
+
+
+================================================================================
+
+# Windows
+
+To use a DLL: compile with .lib and .h available, but execute with the .dll in
+c:\Windows\system32.
+
+
+# Windows (assumes you are using git bash as administrator)
+
+## Find a process that is using a determined port:
+netstat -aon | grep 8761
+Or findstr in place of grep, if you are using windows command line.
+The mnemonic -aon stands for:
+- a: all connections and listening ports;
+- o: display owning process id.
+- n: display addresses and port numbers in numerical form;
+
+## Kill the mother-fucker:
+taskkill -pid 3320 -f
+
+
+================================================================================
+
+
+# Apt, apt-get, apt-cache and dpkg
+
+There show commands for apt, which you should use in the terminal, and the
+equivalent command in apt-get or apt-cache to use in scripts.
+
+
+## Update the packages database:
+apt update
+apt-get update
+
+This command should be done before upgrade, search and install.
+
+## Update outdated packages:
+apt upgrade
+apt-get upgrade -y
+
+## Update outdated packages and remove unneeded packages:
+apt full-upgrade
+apt-get dist-upgrade
+
+## Install new packages. Upgrade it if already installed:
+apt install <package-name>...
+apt-get install <package-name>... -y
+
+--no-upgrade is used to install, but not upgrade.
+--only-upgrade is used to upgrade, but not install.
+
+## To install a local .deb package, use dpkg:
+dpkg -i <deb-package>
+
+## Remove a package:
+apt remove <package-name>
+apt-get remove <package-name> -y
+
+## Remove a package and its configuration files:
+apt purge <package-name>
+apt-get purge <package-name> -y
+
+## Search for packages:
+apt search <term>
+apt-cache search <term>
+
+## Show info about a package:
+apt show <package-name>
+apt-cache show <package-name>
+
+## Uninstall packages that were dependencies to packages that were removed.
+apt autoremove
+apt-get autoremove -y
+
+## List packages:
+apt list
+
+The following are accepted parameters:
+--installed, --all-versions, --upgradeable
+
+## Get the package to which a program belongs:
+dpkg -S <program>
+
+## Get the repository to which a package belings. Show status/details:
+dpkg -s <package-name>
+
+================================================================================
+
+
+# Docker
+
+## Search for an ubuntu image:
+docker search ubuntu
+
+## Add user paulo to the docker group to execute it without typing sudo:
+usermod -aG docker paulo
+
+## Install the ubuntu image:
+docker pull ubuntu
+
+## Show installed images:
+docker images
+
+## Show all docker containers both activated and unactivated:
+docker ps -a
+## Show the id of all docker containers:
+docker ps -aq
+
+## Run ubuntu image in interactive mode:
+docker run -it ubuntu
+
+## Run a container listening to port 5007:
+docker run -p 5007:5007 <image-name>
+
+## Connect to an open container through bash:
+docker exec -it <container-id-or-name> bash
+
+## Start a container:
+docker start <container-id-or-name>
+
+## Stop a container:
+docker stop <container-id-or-name>
+
+## Attach to a container (enter ubuntu shell, for example):
+docker attach <container-id-or-name>
+
+## Remove a container from docker:
+docker rm <container-id-or-name>
+
+## Delete all containers:
+docker rm $(docker ps -aq)
+
+## Save a container as an image:
+docker commit -m "message" -a "username" <container-id-or-name> username/newname
+
+## Create an image from a Dockerfile in the directory of the project:
+docker build -t <image-name> .
+
+
+## Install jitsimeet docker:
+
+### download docker-compose:
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+### Make it executable:
+sudo chamod +x /user/local/bin/docker-compose
+
+Now go to the jitsimeet image project and make sure there is a .env file.
+
+### Run the image as a daemon:
+docker-compose up -d
+
+================================================================================
+
+# Postgres
+
+## To install:
+sudo apt install postgresql postgresql-contrib
+
+## Change user to postgres. Postgres creates an Unix user postgres on
+installation.  
+sudo -i -u postgres
+
+## Open postgres terminal:
+psql
+
+## Create a new user (or role):
+createuser --interactive
+
+## Create a new database:
+createdb <dbname>
+
+## Add a new Unix user:
+sudo adduser <username>
+
+## Change to the new user.
+sudo -i -u <username>
+
+## Open postgres terminal with the new user.
+psql -d <database>
+
+## Get info on the psql connection.
+\conninfo
+
+## Change the password of a user:
+ALTER USER <username> PASSWORD '<newpassword>';
+
+## Sample SQL commands:
+CREATE TABLE tb_table ( id serial PRIMARY KEY, text VARCHAR (256) );
+INSERT INTO tb_table (text) VALUES ('foobar spameggs');
+
+## Make Postgres listen to remote connections:
+Find where postgresql.conf is:
+  find / -name "postgrgesql.conf"
+Then set the parameter listen_addresses to *:
+  listen_addresses = '*'
+Then add these two lines at the end of pg_hba.conf (in the same folder 
+as postgresql.conf):
+  host    all             all             0.0.0.0/0               md5
+  host    all             all             ::/0                    md5
+Then restart postgres:
+  sudo /etc/init.d/postgresql restart
+netstat -nlt should show this line (if postgres is bount to port 5432):
+  tcp        0      0 0.0.0.0:5432            0.0.0.0:*               LISTEN
+
+================================================================================
+
+# Tmux
+
+Tmux adds sessions, windows and splits to the terminal. Sessions may have many
+windows, and windows may have many splits.
+
+Sessions may be attached to or dettached from. You attach to a session when you
+open tmux for the first time, for example, and when you dettach from it, you go
+back to the terminal where you have attached to it in the first place.
+
+Sessions keep running in background when you are not attached to them. It is
+useful for running multiple projects. Running servers in a window and editing
+code with vim in another is also useful. If you need to have running processes
+beside your editing, for referencing, either use vim :term or a tmux split.
+
+tmux new -s database: creates a new session with name database
+tmux ls: shows all sessions and their names
+tmux attach -t 0: attaches to session of name 0
+tmux attach -t database: attaches to session named database
+tmux kill-session -t database
+
+C-b: inside tmux, C-b has to be pressed before any of the following commands.
+d: detatch session
+s: list all sessions (use j, k to navigate and enter to select)
+(: go to the previous session
+): go to the next session
+$: rename current session
+:new -s database: creates a session named database
+c: create window
+x: close window
+p: previous window
+n: next window
+,: rename current window
+%: vertical split
+": horizontal split
+<arrow>: move through splits
+C-<arrow>: resize split
+z: fullscreen or unfullscreen a split
+?: list command bindings
+[: enter select mode
+<number>: open numbered window
+M-2: Resize windows evenly vertically.
+M-1: Resize windows evenly horizontally.
+
+Commands done with C-b: (Ctrl-b plus colon ':'):
+:setw synchronize-panes on
+  This allows you to write on all splits simultaneously. May change on to off.
+
+
+
+================================================================================
+
+# Shell
+
+## List all python files in the project.
+ls -la $(find . -name '*.py')
+
+This creates a subprocess that executes find and expands its standard output
+passing it as the input to the program ls. The expression $() is considered the
+output of the expression inside it.
+
+This line is similar to:
+
+find . -name *.py | xargs ls -la
+
+It is important to note that the output of a $() substitution expression will
+exchange all spaces to new lines, so if you use:
+
+grep $(find -name "*.cs") -e GetTZInfo
+
+and there are C# filenames with space, these names are going to be split and
+cause "No such file or directory" errors. The correct way is using exec:
+
+find -name "*.cs" -exec grep '{}' -e GetTZInfo --with-filename \;
+
+or
+
+find -name "*.cs" -exec grep --with-filename GetTZInfo '{}' +
+
+There shouldn't be anything between '{}' and + in this case.
+
+================================================================================
+
+# Ctags
+
+## Create tags for the project:
+ctags -R .
+
+================================================================================
+
+# Sed
+
+## Substitute zit to git in git.txt. The argument -i is not Posix, though.
+sed -i "s/zit/git/g" git.txt
+
+================================================================================
+
+# Grep
+
+Grep searches a string in a text.
+
+## How to grep recursively only for target file extensions:
+grep -R "expr" . --include=*.py
+
+This command has the same function as the following:
+find . -name *.py | xargs grep "expr"
+grep $(find . -name *.py) -e "expre"
+
+The latter option works in Vim.
+
+
+In Grep the expression come before the files list, unless using -e parameter,
+like so:
+grep -R . --include=*.py -e expr
+
+
+## Grep for the complement. Show all the lines that do not start with #:
+grep ^# -v
+
+## Grep all lines from a patterns.txt file:
+grep -f patterns.txt *.py
+
+## Print the match and the 2 lines before and after it:
+grep -f patterns.txt *.py -B2 -A2
+
+## Grep recursevely, ignore case and without printing error messages:
+grep -Rise expression
+
+
+================================================================================
+
+# Find
+
+Find lists all files down a directory tree.
+
+## Finds all python files from the current directory down the tree:
+find . -name *.py
+
+## Finds files that are not python
+find . -not -name *.py
+
+## Finds directories that do not begin with 'py'
+find . -type d -not -name py*
+
+This can also be written like so:
+find . -type d -and -not -name py*
+
+The -and operator is inferred if no operator is specified.
+
+
+## Find all python and text files:
+find . -name '*.py' -or -name '*.txt'
+
+The expressions need to be inside quotes is you want to pass more than one
+argument to find.
+
+## Get the summed size of a list of files:
+find . -name '*.py' -exec du -ch '{}' +
+
+What is the difference between \; and + in find -exec? It is that \; indicates
+that the command must be executed for each word of the list, while + indicates
+that the command has to be executed only once for all words at once.
+
+If you are using find -name *.py before the end of the line you have to put
+*.py inside '' or "" in order for the wildcard expansion not to conflict with
+the code that follows it.
+
+That command is equivalent to:
+find . -name '*.py' | xargs du -ch
+
+================================================================================
+
+# Xargs
+
+Xargs inputs to a program the output of another.
+
+## Compare the two commands:
+
+- Finds all python files that have interface in the name:
+find . -name *.py | grep interface
+
+- Finds all python files that have interface in their content:
+find . -name *.py | xargs grep interface
+
+This shows the filename and the line of each occurence. If you want only the
+file, use -l on grep:
+
+find . -name *.py | xargs grep -l interface
+
+## Putting the input line wherever you want:
+find tmp/ -name *.py | xargs -I {} cp {} {}.backup
+
+The following line copies all files in tmp/ into files appended with .backup.
+The line is represented by the placeholder {}, which is set by the -I
+parameter. This is very slow.
+
+
+## Finds all python files that contain MetodoNaoImplementadoException
+find . -name *.py | xargs grep MetodoNaoImplementadoException
+
+## Makes a substitution on all python files
+find . -name *.py | xargs sed -i s/MetodoNaoImplementado/MethodNotImplemented/g
+
+## Find all python files in a path that contains migrations:
+find -name *.py -path *migrations*
+
+================================================================================
+
+# Vim for the beginner:
+
+esc: go to normal mode.
+Most commands are made in normal mode.
+
+## Cursor movement:
+
+h: move left
+j: move down
+k: move up
+l: move right
+Arrow keys may be used in both normal and insert modes.
+
+## Movement shortcuts:
+
+w: move a word forward
+b: move a word backward
+W: move a word forward (until white space)
+B: move a word backward (until white space)
+{: move back a paragraph
+}: move forward a paragraph
+C-y: scroll up
+C-e: scroll down
+C-u: page scroll up
+C-d: page scroll down
+
+
+# Searching
+
+/foobar: find foobar in the file
+n: next foobar
+p: previous foobar
+*: find word in cursor
+
+## Editing:
+i: enter insert mode
+a: append: move right and enter insert mode
+I: enter insert mode in the beginning of the line
+A: append to the end of the line
+rx: replace letter to x
+u: undo
+C-r: redo
+
+## Shortcuts to editing:
+ciw: change word
+ci': change content in ''
+ci": change content in ""
+ci(: change content in (), or [], or {}, mutatis mutandis
+dd: delete line
+.: repeat last edit
+gqip: format text paragraph (between two blank lines)
+==: format code in file
+=i{: format code in {}
+
+
+## Commands:
+:w: write file
+:q: quit file
+:e br/com/foo.py: edit file br/com/foo.py
+
+
+## Working directory:
+:pwd: show working directory.
+:cd ~/Desktop: change working directory to ~/Desktop
+
+
+## Visual mode:
+v: start selecting (enter visual mode)
+V: start selecting lines (enter visual mode)
+y: yank (copy) selected lines
+"xy: yank selected lines to register x.
+p: paste yanked text at the cursor.
+P: paste before the cursor
+"xp: paste copied content in register x.
+
+Note: to copy to the clipboard or paste from it, use register +.
+"+y: copy to clipboard
+"+p: paste from clipboard
+
+
+## Copying shortcuts:
+yiw: copy a word
+yiW: copy a word (between whitespaces)
+
+
+## Advanced notions:
+
+Vim is a modal editor. The Normal mode is the one where you browse text and
+makes edits. Insert mode is the one to write text. In Normal mode Vim acts like
+a language. There are a series of commands and movements that can be combined
+to make complex operations.
+
+List of commands:
+d: delete
+a: append
+i: insert
+y: yank
+s: substitute
+p: paste
+o: new line under
+x: remove character
+c: change
+
+
+List of movements:
+w: move to the beginnig of the next word
+e: move to the end of the current word
+b: move to the beginning of the current word
+$: move to the end of the line
+^: move to the beginning of the line
+fx: go to the next x in the line
+tx: go to the previous x in the line
+:: repeat last f or t
+,: repeat last f or t, inverse direction
+gg: go to the beginning of the file
+G: go to the end of the file
+n: go to the next find match
+N: go to the previous find match
+{: go back a paragraph
+}: go forward a paragrah
+
+
+Combine a movement with a command:
+
+dw: delete umtil the begining of the next word
+yt;: yank text until before ;
+
+
+Combine those with a number to repeat that many times:
+
+2f>: find the next second > in the line
+80i=: insert 80 =
+3}: move three paragraphs forward
+
+
+A special sort of movement: iw, or i{, or i", or i', after a movement:
+
+ci": change content in ""
+yi{: yank content in {}
+
+
+## Vimdiff:
+
+Diff the current buffer with another file by splitting the screen and showing
+the differences:
+:diffsplit other_file
+
+:diffoff: stop showing differences
+
+]c: jump to the next difference.
+dp: put the current difference on to the other file.
+
+
+## Spell check:
+
+### :set spell spelllang=en_us
+### :set nospell
+
+## Splits:
+
+
+## Terminal:
+
+:term opens the terminal to the current directory.
+
+While in terminal:
+C-\ C-n: enter normal mode.
+C-w N: enter normal mode (N must be captal).
+i: enter insert mode.
+
+While in insert mode:
+C-w "r paste text in register r
+
+
+## Folds:
+### zf: fold selected lines.
+### zfa{: fold around braces.
+### zo: open a fold.
+### zc: close a fold.
+### zR: open all folds.
+### zM: close all folds.
+
+### Automatically fold everything according to syntax.
+set foldmethod=syntax
+
+## Notes:
+
+C-]: jumps to function declaration.
+g C-]: opens a window with all the definitions of the function.
+
+
+## G command:
+
+### To delete lines between two patterns:
+
+g/pattern1/.+1,/pattern2/-1 delete
+
+### To delete the remote lines of a merging Git file:
+g/^<<<<<<</d
+g/^=======/.,/^>>>>>>>/d
+
+### To change camel case words into snake case:
+s/_\(.\)/\U\1/g
+
+### To change snake case words into camel case:
+s/\([A-Z]\)/_\L\1/g
